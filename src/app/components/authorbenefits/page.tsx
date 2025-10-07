@@ -33,7 +33,7 @@ export default function Benefits() {
               <Image src="/img/headphones.png" alt="Headphones icon" width={56} height={56} />
               </div>
               <div>
-                <h3 className="text-xl mb-1 font-semibold text-gray-900">Feed your curiosity</h3>
+                <h3 className="text-2xl mb-1 font-semibold text-gray-900">Feed your curiosity</h3>
                 <p className="text-gray-600 m:text-xl text-base">Get personalized recommendations based on 7,500+ <br></br>stories across all genres.</p>
               </div>
             </div>
@@ -44,7 +44,7 @@ export default function Benefits() {
               <Image src="/img/headphones.png" alt="Headphones icon" width={56} height={56} />
               </div>
               <div>
-                <h3 className="text-xl mb-1 font-semibold text-gray-900">Join a global community</h3>
+                <h3 className="text-2xl mb-1 font-semibold text-gray-900">Join a global community</h3>
                 <p className="text-gray-600 m:text-xl text-base">Connect with readers and authors from around the <br></br>world who share your passion.</p>
               </div>
             </div>
@@ -55,7 +55,7 @@ export default function Benefits() {
               <Image src="/img/headphones.png" alt="Headphones icon" width={56} height={56} />
               </div>
               <div>
-                <h3 className="text-xl mb-1 font-semibold text-gray-900">Write and publish anytime</h3>
+                <h3 className="text-2xl mb-1 font-semibold text-gray-900">Write and publish anytime</h3>
                 <p className="text-gray-600 m:text-xl text-base">Share your stories instantly. No approval process,<br></br> no barriers.</p>
               </div>
             </div>

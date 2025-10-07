@@ -44,7 +44,7 @@ const categories = [
 
 export default function CategoriesSection() {
   return (
-    <section className="bg-[#eff5f387] py-16 px-4 md:px-16">
+    <section className="bg-[#fff] py-20 px-4 md:px-16 pb-10">
       <div className="max-w-7xl mx-auto text-center">
         <h2 className="text-3xl md:text-4xl font-bold text-[#0f172a] mb-4">
           A world of stories in your pocket
@@ -56,7 +56,7 @@ export default function CategoriesSection() {
             <a
               key={index}
               href={`/category/${cat.name.toLowerCase().replace(/\s+/g, '-')}`}
-              className="flex items-center gap-3 px-6 py-3 rounded-xl text-xs font-medium transition duration-200 bg-white text-gray-700 border-gray-200 hover:bg-gray-100"
+              className="flex items-center gap-3 px-6 py-3 rounded-xl text-xs font-medium transition duration-200 bg-gray-100 text-gray-700 border-gray-200 hover:bg-gray-200"
             >
               {cat.icon}
               <span className="text-lg">{cat.name}</span>

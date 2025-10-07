@@ -1,36 +1,34 @@
 
-import Header from "./components/Header";
-import Hero from "./components/homebanner/Hero";
-import Benefits from "./components/authorbenefits/page";
-import CategoriesSection from "./components/categoryhome/page";
-import TopRatedStories from "./components/homepagecomponents/TopRatedStories";
-import FAQSection from "./components/homepagecomponents/FeaturedStories";
-import TestimonialSection from "./components/hometestimonials/page";
-import Footer from "./components/Footer";
-import PopularonStoriesVale from "./components/homepagecomponents/PopularonStoriesVale";
-import NewReleases from "./components/homepagecomponents/NewReleases";
-import EdiorsPicks from "./components/homepagecomponents/EditorsPicks";
-import StaffPicks from "./components/homepagecomponents/StaffFavorite";
-import FaqSection from "./components/categoryblocks/FaqSection";
-import HomeFAQSection from "./components/homefaqs/page";
-import Top10Stories from "./components/homepagecomponents/Top10Stories";
+import Header from "../components/Header";
+import Hero from "../components/homebanner/Hero";
+import Benefits from "../components/authorbenefits/page";
+import CategoriesSection from "../components/categoryhome/page";
+import TopRatedStories from "../components/homepagecomponents/TopRatedStories";
+import TestimonialSection from "../components/hometestimonials/page";
+import Footer from "../components/Footer";
+import PopularonStoriesVale from "../components/homepagecomponents/PopularonStoriesVale";
+import NewReleases from "../components/homepagecomponents/NewReleases";
+import EdiorsPicks from "../components/homepagecomponents/EditorsPicks";
+import StaffPicks from "../components/homepagecomponents/StaffFavorite";
+import HomeFAQSection from "../components/homefaqs/page";
+import Top10Stories from "../components/homepagecomponents/Top10Stories";
 
 export default function Home() {
   return (
     <div className="">
       <Header/>
       <main>
-       <Hero/>
-       <CategoriesSection/>
+       
+       
        <TopRatedStories/>
        <Top10Stories/>
+       <CategoriesSection/>
        <PopularonStoriesVale/>
-       <Benefits/>
+       {/* <Benefits/> */}
        <NewReleases/>
        <EdiorsPicks/>
        <StaffPicks/>
-       <TestimonialSection/>
-       <HomeFAQSection/>
+       {/* <HomeFAQSection/> */}
 
        <section className="bg-white py-0 pb-10 px-6 md:px-12">
   <div className=" mx-auto">

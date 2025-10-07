@@ -8,7 +8,7 @@ interface FAQItem {
   answer: string;
 }
 
-const FAQSection = () => {
+const HomeFAQSection = () => {
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
 
   const faqs: FAQItem[] = [
@@ -94,4 +94,4 @@ const FAQSection = () => {
   );
 };
 
-export default FAQSection;
+export default HomeFAQSection;

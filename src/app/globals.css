@@ -44,3 +44,90 @@ body {
 #swiperpaddfx .swiper-pagination-bullet{width: 50px;border-radius: 5px!important;height: 4px!important;}
 #quotesi svg{width: 40px;}
 .chevion{width: 28px;height: 28px;}
+
+
+
+#homepage .container {
+  position: relative;
+  display: flex;
+  gap: 24px;
+  height: 80vh;
+  max-width: 1380px;
+  width: 100%;
+  overflow: hidden;
+}
+
+.image-column {
+  flex: 1;
+  height: 100%;
+  overflow: hidden;
+  position: relative;
+}
+
+.image-track {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+}
+
+.image-item {
+  border-radius: 16px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+}
+
+/* Keyframes for scrolling */
+@keyframes marqueeUp {
+  0% {
+    transform: translateY(0);
+  }
+  100% {
+    transform: translateY(-50%);
+  }
+}
+
+@keyframes marqueeDown {
+  0% {
+    transform: translateY(-50%);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+
+/* Animation classes */
+.marquee-up {
+  animation: marqueeUp 60s linear infinite;  /* was 20s */
+}
+
+.marquee-down {
+  animation: marqueeDown 60s linear infinite; /* was 20s */
+}
+
+.fade-top,
+.fade-bottom {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 80px; /* adjust size of fade */
+  pointer-events: none; /* so clicks go through */
+  z-index: 10;
+}
+
+.fade-top {
+  top: 0;
+  background: linear-gradient(to bottom, rgba(255, 255, 255, 1), rgba(255,255,255,0));
+}
+
+.fade-bottom {
+  bottom: 0;
+  background: linear-gradient(to top, rgba(255, 255, 255, 1), rgba(255,255,255,0));
+}
+
+#paddleftright{padding:0px 51px;padding-top: 10px;padding-bottom: 10px;}
