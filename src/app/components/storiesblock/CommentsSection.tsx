@@ -1,162 +1,152 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
-const allComments = [
-  {
-    id: 1,
-    name: 'Sarah Lind',
-    avatar: 'img/story-image-2.jpg',
-    likedBy: 'Donna',
-    likedByAvatar: '/img/story-image-2.jpg',
-    text: 'This story really made me reflect. The writing is vivid and emotional — looking forward to more!',
-  },
-  {
-    id: 2,
-    name: 'John Doe',
-    avatar: 'img/story-image-2.jpg',
-    likedBy: 'Ali',
-    likedByAvatar: '/img/story-image-2.jpg',
-    text: 'Very engaging read! Keep up the great work.',
-  },
-  {
-    id: 3,
-    name: 'Emily Zhang',
-    avatar: 'img/story-image-2.jpg',
-    likedBy: 'Ravi',
-    likedByAvatar: '/img/story-image-2.jpg',
-    text: 'I love how real the characters felt!',
-  },
-  {
-    id: 4,
-    name: 'Marcus Reyes',
-    avatar: 'img/story-image-2.jpg',
-    likedBy: 'Maya',
-    likedByAvatar: '/img/story-image-2.jpg',
-    text: 'Looking forward to the next story in this series.',
-  },
-  {
-    id: 5,
-    name: 'Nina Patel',
-    avatar: 'img/story-image-2.jpg',
-    likedBy: 'Zoe',
-    likedByAvatar: '/img/story-image-2.jpg',
-    text: 'Your stories always spark deep thought. Loved it!',
-  },
-];
+interface Comment {
+  id: number;
+  body: string;
+  is_liked_by_author: boolean;
+  user: { name: string; avatar?: string };
+  replies?: Comment[];
+}
 
-export default function StoryComments() {
-  const [replyingTo, setReplyingTo] = useState(null);
+export default function StoryComments({ storyId }: { storyId: string }) {
+  const [comments, setComments] = useState<Comment[]>([]);
+  const [newComment, setNewComment] = useState('');
+  const [replyingTo, setReplyingTo] = useState<number | null>(null);
+  const [replyText, setReplyText] = useState('');
   const [showAll, setShowAll] = useState(false);
 
-  const initialComments = allComments.slice(0, 3);
-  const extraComments = allComments.slice(3);
+  // 1. Fetch Comments
+  useEffect(() => {
+    fetch(`https://api11.storiesvale.com/api/stories/${storyId}/comments`)
+      .then(res => res.json())
+      .then(data => setComments(data));
+  }, [storyId]);
 
-  const renderComment = (comment) => (
-    <div
-      key={comment.id}
-      className="relative flex items-start gap-4 group border-b border-gray-200 rounded p-5 py-6 pb-6 transition-colors hover:bg-gray-50"
-    >
-      <img
-        src={comment.avatar}
-        alt="User Avatar"
-        className="w-10 h-10 rounded-full object-cover"
+  // 2. Submit Main Comment
+  const handleSubmit = async () => {
+    if (!newComment.trim()) return;
+    const res = await fetch(`https://api11.storiesvale.com/api/stories/${storyId}/comments`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ body: newComment })
+    });
+    if (res.ok) {
+      const savedComment = await res.json();
+      setComments([savedComment, ...comments]);
+      setNewComment('');
+    }
+  };
+
+  // 3. Submit Reply
+  const handleReply = async (parentId: number) => {
+    if (!replyText.trim()) return;
+    const res = await fetch(`https://api11.storiesvale.com/api/stories/${storyId}/comments`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ body: replyText, parent_id: parentId })
+    });
+    if (res.ok) {
+      // Refresh comments to show new reply
+      const updated = await fetch(`https://api11.storiesvale.com/api/stories/${storyId}/comments`).then(r => r.json());
+      setComments(updated);
+      setReplyingTo(null);
+      setReplyText('');
+    }
+  };
+
+  const renderComment = (comment: Comment) => (
+    <div key={comment.id} className="relative flex items-start gap-4 border-b border-gray-100 p-5 transition-colors hover:bg-gray-50">
+      <img 
+        src={comment.user.avatar || '/img/default-avatar.png'} 
+        className="w-10 h-10 rounded-full object-cover" 
+        alt="avatar" 
       />
 
       <div className="flex-1">
-        <div className="flex justify-between items-start">
+        <div className="flex justify-between items-center">
           <h4 className="font-semibold text-gray-800 flex items-center gap-2">
-            {comment.name}
-            <span className="flex items-center text-sm font-semibold text-emerald-600 border border-emerald-600 rounded-md px-2 py-0.5">
-              <img
-                src={comment.likedByAvatar}
-                alt={`Author ${comment.likedBy}`}
-                className="w-4 h-4 rounded-full object-cover mr-1"
-              />
-              Liked by {comment.likedBy}
-            </span>
+            {comment.user.name}
+            {comment.is_liked_by_author && (
+              <span className="text-[10px] bg-emerald-50 text-emerald-600 border border-emerald-200 px-2 py-0.5 rounded">
+                Liked by Author
+              </span>
+            )}
           </h4>
-
-          <div className="relative">
-            <button
-              className="hover:text-gray-700 text-gray-400 transition"
-              onClick={() => {}}
-            >
-              <i className="fa-solid fa-ellipsis"></i>
-            </button>
-          </div>
         </div>
 
-        <p className="text-[15px] text-gray-700 mt-2 leading-relaxed">
-          {comment.text}
-        </p>
+        <p className="text-gray-700 mt-1">{comment.body}</p>
 
-        <div className="flex items-center gap-4 mt-3 text-sm text-gray-500">
-          <button className="flex items-center gap-1 hover:text-yellow-500 transition">
-            <i className="fa-solid fa-star"></i>
-            <span>Like</span>
-          </button>
-          <button
-            className="hover:text-indigo-600 transition"
-            onClick={() =>
-              setReplyingTo(replyingTo === comment.id ? null : comment.id)
-            }
+        <div className="flex items-center gap-4 mt-3 text-xs text-gray-500">
+          <button className="hover:text-yellow-600 font-medium">Like</button>
+          <button 
+            onClick={() => setReplyingTo(replyingTo === comment.id ? null : comment.id)}
+            className="hover:text-indigo-600 font-medium"
           >
             Reply
           </button>
         </div>
 
+        {/* Reply Input */}
         {replyingTo === comment.id && (
-          <div className="mt-3 reply-box">
-            <textarea
-              rows="3"
-              className="w-full border rounded p-2 text-gray-700 focus:ring-2 focus:ring-yellow-400 outline-none"
-              placeholder="Write your reply..."
-            ></textarea>
-            <div className="flex justify-end mt-2 gap-2">
-              <button
-                className="px-3 py-1 text-sm rounded bg-gray-300 hover:bg-gray-400 transition"
-                onClick={() => setReplyingTo(null)}
-              >
-                Cancel
-              </button>
-              <button className="px-3 py-1 text-sm rounded bg-yellow-500 text-white hover:bg-yellow-600 transition">
-                Submit
-              </button>
+          <div className="mt-3">
+            <textarea 
+              className="w-full border rounded-lg p-2 text-sm outline-none focus:ring-1 focus:ring-blue-400"
+              placeholder="Write a reply..."
+              value={replyText}
+              onChange={(e) => setReplyText(e.target.value)}
+            />
+            <div className="flex justify-end gap-2 mt-2">
+              <button onClick={() => setReplyingTo(null)} className="text-xs text-gray-500">Cancel</button>
+              <button onClick={() => handleReply(comment.id)} className="text-xs bg-blue-600 text-white px-3 py-1 rounded">Post</button>
             </div>
           </div>
         )}
 
-        <div className="mt-4 space-y-4 replies-container text-gray-700"></div>
+        {/* Nested Replies */}
+        {comment.replies && comment.replies.length > 0 && (
+          <div className="mt-4 ml-4 pl-4 border-l-2 border-gray-100 space-y-4">
+            {comment.replies.map(renderComment)}
+          </div>
+        )}
       </div>
     </div>
   );
 
   return (
-    <div className="max-w-4xl mx-auto mt-10 mb-20">
-      <h3 className="text-xl font-semibold text-gray-800 mb-4">
-        Comments ({allComments.length})
-      </h3>
+    <div className="max-w-4xl mx-auto mt-20 mb-20 px-4">
+      <h3 className="text-xl font-bold text-gray-900 mb-6">Comments ({comments.length})</h3>
 
-      {initialComments.map(renderComment)}
+      {/* Main Post Input */}
+      <div className="mb-10 flex gap-4">
+        <textarea
+          className="flex-1 border border-gray-300 rounded-xl p-4 text-gray-800 outline-none focus:ring-2 focus:ring-blue-100"
+          placeholder="What are your thoughts on this story?"
+          rows={3}
+          value={newComment}
+          onChange={(e) => setNewComment(e.target.value)}
+        />
+        <button 
+          onClick={handleSubmit}
+          className="self-end bg-[#1d2f49] text-white px-6 py-3 rounded-xl font-semibold hover:opacity-90 transition"
+        >
+          Post
+        </button>
+      </div>
 
-      {!showAll && extraComments.length > 0 && (
-        <div className="text-left mt-6">
-          <button
-            className="inline-flex items-center gap-2 px-5 py-2.5 bg-gray-100 hover:bg-gray-200 text-gray-700 font-medium rounded-lg transition"
-            onClick={() => setShowAll(true)}
-          >
-            View All Comments
-          </button>
-        </div>
+      <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
+        {comments.slice(0, showAll ? comments.length : 3).map(renderComment)}
+      </div>
+
+      {!showAll && comments.length > 3 && (
+        <button 
+          onClick={() => setShowAll(true)}
+          className="mt-6 w-full py-3 bg-gray-50 text-gray-600 font-medium rounded-xl hover:bg-gray-100 transition"
+        >
+          View all {comments.length} comments
+        </button>
       )}
-
-      {showAll &&
-        extraComments.map((comment) => (
-          <div key={comment.id} className="mt-4">
-            {renderComment(comment)}
-          </div>
-        ))}
     </div>
   );
 }

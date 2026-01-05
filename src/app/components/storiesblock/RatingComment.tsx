@@ -25,7 +25,7 @@ export default function RatingComment() {
         <div className="flex items-start gap-3 relative">
           {/* Avatar */}
           <img
-            src="img/story-image-2.jpg"
+            src="/img/textured-bg-purple.webp"
             alt="User"
             className="w-10 h-10 rounded-full object-cover"
           />
