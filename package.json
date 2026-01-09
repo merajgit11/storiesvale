@@ -14,7 +14,7 @@
     "@tiptap/starter-kit": "^3.0.7",
     "browser-image-compression": "^2.0.2",
     "lucide-react": "^0.525.0",
-    "next": "15.4.2",
+    "next": "15.4.8",
     "react": "19.1.0",
     "react-dom": "19.1.0",
     "react-easy-crop": "^5.5.0",
