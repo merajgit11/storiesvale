@@ -70,7 +70,7 @@ export default function Header() {
               Become an Author
             </Link>
           <Link
-            href="/write"
+            href="/addnewstorynew"
             className="bg-[#2ee081] text-white px-6 py-3 rounded hover:bg-[#20bc68] hover:text-[#20344d] transition font-semibold"
           >
             Write a Story

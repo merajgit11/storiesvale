@@ -1,93 +1,23 @@
 'use client';
-
 import Image from 'next/image';
+import Link from 'next/link'; // For navigation
 import { useRef } from 'react';
 
-const stories = [
-  {
-    id: 1,
-    title: 'Atomic Habits',
-    author: 'James Clear',
-    category: 'Self Help',
-    rating: 4.2,
-    image: '/img/wolf.jpg',
-  },
-  {
-    id: 2,
-    title: 'Ikigai',
-    author: 'Héctor García',
-    category: 'Self Help',
-    rating: 4.3,
-    image: '/img/story-image-2.jpg',
-  },
-  {
-    id: 3,
-    title: 'Deep Work',
-    author: 'Cal Newport',
-    category: 'Self Help',
-    rating: 4.4,
-    image: '/img/story-image.jpg',
-  },
-  {
-    id: 4,
-    title: 'Rich Dad Poor Dad',
-    author: 'Robert Kiyosaki',
-    category: 'Self Help',
-    rating: 4.5,
-    image: '/img/story-image-3.jpg',
-  },
-  {
-    id: 5,
-    title: 'The Alchemist',
-    author: 'Paulo Coelho',
-    category: 'Self Help',
-    rating: 4.6,
-    image: '/img/story-image-4.jpg',
-  },
-   {
-    id: 6,
-    title: 'Atomic Habits',
-    author: 'James Clear',
-    category: 'Self Help',
-    rating: 4.2,
-    image: '/img/wolf.jpg',
-  },
-  {
-    id: 7,
-    title: 'Ikigai',
-    author: 'Héctor García',
-    category: 'Self Help',
-    rating: 4.3,
-    image: '/img/story-image-2.jpg',
-  },
-  {
-    id: 8,
-    title: 'Deep Work',
-    author: 'Cal Newport',
-    category: 'Self Help',
-    rating: 4.4,
-    image: '/img/story-image.jpg',
-  },
-  {
-    id: 9,
-    title: 'Rich Dad Poor Dad',
-    author: 'Robert Kiyosaki',
-    category: 'Self Help',
-    rating: 4.5,
-    image: '/img/story-image-3.jpg',
-  },
-  {
-    id: 10,
-    title: 'The Alchemist',
-    author: 'Paulo Coelho',
-    category: 'Self Help',
-    rating: 4.6,
-    image: '/img/story-image-4.jpg',
-  },
-];
+interface Story {
+  id: number;
+  title: string;
+  slug: string;
+  cover_image: string;
+  category?: { name: string };
+  author?: { name: string };
+}
 
-export default function NewReleases() {
+
+export default function NewReleases({ stories, loading }: { stories: Story[], loading: boolean }) {
   const scrollRef = useRef<HTMLDivElement>(null);
+
+  if (loading) return <div className="p-10 text-center"></div>;
+
 
   const scrollByAmount = (amount: number) => {
     if (scrollRef.current) {
@@ -133,30 +63,31 @@ export default function NewReleases() {
         </button>
 
         {/* Scrollable Stories */}
-        <div
-  ref={scrollRef}
-  className="flex overflow-x-auto scroll-smooth whitespace-nowrap no-scrollbar space-x-4 md:space-x-[20px] px-2"
-  id="paddleftright"
->
+        <div ref={scrollRef} className="flex overflow-x-auto no-scrollbar space-x-5 px-6">
           {stories.map((story) => (
-            <div
-              key={story.id}
-              className="mt-2 min-w-[200px] max-w-[200px] bg-[#eff5f3] rounded-xl snap-start shrink-0 transform transition-all duration-300 hover:shadow-lg hover:scale-[1.02]"
+            <Link 
+              key={story.id} 
+              href={`/story/${story.slug}`} // Link to the dynamic reader page
+              className="min-w-[200px] max-w-[200px] group"
             >
-              <Image
-                src={story.image}
-                alt={story.title}
-                width={200}
-                height={280}
-                className="rounded-t-md w-full h-[280px] object-cover"
-              />
-              <div className="py-4 px-3">
-                <p className="text-xs text-gray-500 uppercase mb-1">{story.category}</p>
-                <h3 className="text-md font-semibold line-clamp-2 min-h-[55px] text-black">{story.title}</h3>
-                <p className="text-sm text-gray-600">By {story.author}</p>
-                <div className="text-yellow-600 text-sm mt-1">★★★★☆ ({story.rating})</div>
+              <div className="bg-[#eff5f3] rounded-xl overflow-hidden transition-all hover:shadow-lg">
+                <img
+                  src={story.cover_image ? `https://api11.storiesvale.com/public/${story.cover_image}` : '/img/placeholder.jpg'}
+                  alt={story.title}
+                  className="w-full h-[280px] object-cover group-hover:scale-105 transition-transform"
+                />
+                <div className="py-4 px-3">
+                  <p className="text-xs text-gray-500 uppercase mb-1">
+                    {story.category?.name || 'Story'}
+                  </p>
+                  <h3 className="text-sm font-semibold text-black line-clamp-2 min-h-[40px]">
+                    {story.title}
+                  </h3>
+                  <p className="text-xs text-gray-500">By {story.author?.name || 'StoriesVale'}</p>
+                  <div className="text-yellow-600 text-sm mt-1">★★★★☆ (5)</div>
+                </div>
               </div>
-            </div>
+            </Link>
           ))}
         </div>
       </div>

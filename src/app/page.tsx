@@ -1,4 +1,6 @@
 
+'use client';
+import { useState, useEffect } from 'react';
 import Header from "./components/Header";
 import Hero from "./components/homebanner/Hero";
 import Benefits from "./components/authorbenefits/page";
@@ -16,6 +18,24 @@ import HomeFAQSection from "./components/homefaqs/page";
 import Top10Stories from "./components/homepagecomponents/Top10Stories";
 
 export default function Home() {
+  const [data, setData] = useState({ new_releases: [], top_rated: [] });
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    async function fetchHomeData() {
+      try {
+        const res = await fetch('https://api11.storiesvale.com/api/homepage/stories');
+        const json = await res.json();
+        setData(json);
+      } catch (err) {
+        console.error("Failed to fetch home data", err);
+      } finally {
+        setLoading(false);
+      }
+    }
+    fetchHomeData();
+  }, []);
+
   return (
     <div className="">
       <Header/>
@@ -26,7 +46,7 @@ export default function Home() {
        <Top10Stories/>
        <PopularonStoriesVale/>
        <Benefits/>
-       <NewReleases/>
+       <NewReleases stories={data.new_releases} loading={loading} />
        <EdiorsPicks/>
        <StaffPicks/>
        <TestimonialSection/>
